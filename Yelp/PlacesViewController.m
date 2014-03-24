@@ -60,7 +60,8 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     [self.tableView registerNib:placeCellNib forCellReuseIdentifier:@"PlaceCell"];
     
     self.places = [[NSMutableArray alloc] init];
-    [self fetchData:@"Brunch"];
+    self.searchTerm = @"Brunch";
+    [self fetchData:self.searchTerm];
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,11 +99,16 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     
         // extract sort input
         NSNumber *sort = self.filterInputs[2];
+        
+        // extract category input
+        NSNumber *category = self.filterInputs[3];
 
-        NSArray *inputs = [[NSArray alloc] initWithObjects:input, deals, distance, sort, nil];
-    
+        NSArray *inputs = [[NSArray alloc] initWithObjects:input, deals, distance, sort, category, nil];
+ 
         [self.client searchWithInputs:inputs success:^(AFHTTPRequestOperation *operation, id response) {
-            //NSLog(@"response: %@", response);
+            // remove previous filters
+            self.filterInputs = nil;
+            
             [self.places removeAllObjects];
             NSArray *businesses = [response objectForKey:@"businesses"];
         
@@ -110,7 +116,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
                 Place *place = [[Place alloc] initWithDictionary:business];
                 [self.places addObject:place];
             }
-            NSLog(@"places: %@", businesses);
+            //NSLog(@"places: %@", businesses);
             for (Place *place in self.places) {
                 NSLog(@"place name: %@", place.name);
             }
@@ -177,20 +183,20 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PlaceCell *placeCell = [tableView dequeueReusableCellWithIdentifier:@"PlaceCell" forIndexPath:indexPath];
     Place *place = self.places[indexPath.row];
-    if (indexPath.row == 0) {
-    NSLog(@"BEGIN PRINTING PLACES WHEN LOADING CELL");
-    for (Place *place in self.places) {
-        NSLog(@"place name/cell: %@", place.name);
-    }
+    /*if (indexPath.row == 0) {
+        NSLog(@"BEGIN PRINTING PLACES WHEN LOADING CELL");
+        for (Place *place in self.places) {
+            NSLog(@"place name/cell: %@", place.name);
+        }
     }
     
-    NSLog(@"place/cell: %@", place.name);
+    NSLog(@"place/cell: %@", place.name);*/
     [placeCell setPlace:place];
     return placeCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

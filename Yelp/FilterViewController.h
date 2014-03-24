@@ -16,7 +16,7 @@
 
 @end
 
-@interface FilterViewController : UIViewController < UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate >
+@interface FilterViewController : UIViewController < UITableViewDelegate, UITableViewDataSource >
 
 @property (nonatomic, weak) id <FilterViewControllerDelegate> delegate;
 

@@ -11,8 +11,8 @@
 		900019CA18DF5F2100389DA8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900019C918DF5F2100389DA8 /* SystemConfiguration.framework */; };
 		900019D218DF9FF100389DA8 /* ToggleFilterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900019D018DF9FF100389DA8 /* ToggleFilterCell.m */; };
 		900019D318DF9FF100389DA8 /* ToggleFilterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900019D118DF9FF100389DA8 /* ToggleFilterCell.xib */; };
-		900019DC18DFAC9000389DA8 /* PickerFilterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900019DA18DFAC9000389DA8 /* PickerFilterCell.m */; };
-		900019DD18DFAC9000389DA8 /* PickerFilterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900019DB18DFAC9000389DA8 /* PickerFilterCell.xib */; };
+		900019E118DFE21A00389DA8 /* ExpandFilterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900019DF18DFE21A00389DA8 /* ExpandFilterCell.m */; };
+		900019E218DFE21A00389DA8 /* ExpandFilterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900019E018DFE21A00389DA8 /* ExpandFilterCell.xib */; };
 		9087FC2118DBDADA00E761DD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9087FC2018DBDADA00E761DD /* Foundation.framework */; };
 		9087FC2318DBDADA00E761DD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9087FC2218DBDADA00E761DD /* CoreGraphics.framework */; };
 		9087FC2518DBDADA00E761DD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9087FC2418DBDADA00E761DD /* UIKit.framework */; };
@@ -51,9 +51,9 @@
 		900019CF18DF9FF100389DA8 /* ToggleFilterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToggleFilterCell.h; sourceTree = "<group>"; };
 		900019D018DF9FF100389DA8 /* ToggleFilterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToggleFilterCell.m; sourceTree = "<group>"; };
 		900019D118DF9FF100389DA8 /* ToggleFilterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToggleFilterCell.xib; sourceTree = "<group>"; };
-		900019D918DFAC9000389DA8 /* PickerFilterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerFilterCell.h; sourceTree = "<group>"; };
-		900019DA18DFAC9000389DA8 /* PickerFilterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerFilterCell.m; sourceTree = "<group>"; };
-		900019DB18DFAC9000389DA8 /* PickerFilterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickerFilterCell.xib; sourceTree = "<group>"; };
+		900019DE18DFE21A00389DA8 /* ExpandFilterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandFilterCell.h; sourceTree = "<group>"; };
+		900019DF18DFE21A00389DA8 /* ExpandFilterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandFilterCell.m; sourceTree = "<group>"; };
+		900019E018DFE21A00389DA8 /* ExpandFilterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandFilterCell.xib; sourceTree = "<group>"; };
 		9087FC1D18DBDADA00E761DD /* Yelp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yelp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9087FC2018DBDADA00E761DD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9087FC2218DBDADA00E761DD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -118,9 +118,9 @@
 				9087FC6118DBEC2600E761DD /* PlaceCell.h */,
 				9087FC6218DBEC2600E761DD /* PlaceCell.m */,
 				9087FC6318DBEC2600E761DD /* PlaceCell.xib */,
-				900019D918DFAC9000389DA8 /* PickerFilterCell.h */,
-				900019DA18DFAC9000389DA8 /* PickerFilterCell.m */,
-				900019DB18DFAC9000389DA8 /* PickerFilterCell.xib */,
+				900019DE18DFE21A00389DA8 /* ExpandFilterCell.h */,
+				900019DF18DFE21A00389DA8 /* ExpandFilterCell.m */,
+				900019E018DFE21A00389DA8 /* ExpandFilterCell.xib */,
 				900019CF18DF9FF100389DA8 /* ToggleFilterCell.h */,
 				900019D018DF9FF100389DA8 /* ToggleFilterCell.m */,
 				900019D118DF9FF100389DA8 /* ToggleFilterCell.xib */,
@@ -315,7 +315,7 @@
 			files = (
 				9087FC5318DBDE2000E761DD /* PlacesViewController.xib in Resources */,
 				9087FC2B18DBDADA00E761DD /* InfoPlist.strings in Resources */,
-				900019DD18DFAC9000389DA8 /* PickerFilterCell.xib in Resources */,
+				900019E218DFE21A00389DA8 /* ExpandFilterCell.xib in Resources */,
 				9087FC5818DBE4B600E761DD /* FilterViewController.xib in Resources */,
 				9087FC6518DBEC2600E761DD /* PlaceCell.xib in Resources */,
 				9087FC3318DBDADA00E761DD /* Images.xcassets in Resources */,
@@ -375,7 +375,7 @@
 				9087FC5B18DBE7F800E761DD /* Place.m in Sources */,
 				9087FC5218DBDE2000E761DD /* PlacesViewController.m in Sources */,
 				9087FC3118DBDADA00E761DD /* AppDelegate.m in Sources */,
-				900019DC18DFAC9000389DA8 /* PickerFilterCell.m in Sources */,
+				900019E118DFE21A00389DA8 /* ExpandFilterCell.m in Sources */,
 				9087FC6418DBEC2600E761DD /* PlaceCell.m in Sources */,
 				900019D218DF9FF100389DA8 /* ToggleFilterCell.m in Sources */,
 				9087FC5718DBE4B600E761DD /* FilterViewController.m in Sources */,

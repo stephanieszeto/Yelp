@@ -9,14 +9,25 @@
 #import "FilterViewController.h"
 #import "PlacesViewController.h"
 #import "ToggleFilterCell.h"
-#import "PickerFilterCell.h"
+#import "ExpandFilterCell.h"
 
 @interface FilterViewController ()
 
 @property (nonatomic, weak) IBOutlet UITableView *filterTableView;
 @property (nonatomic) NSInteger sortIndex;
 @property (nonatomic) NSInteger distanceIndex;
+@property (nonatomic) NSInteger categoryIndex;
 @property (nonatomic, strong) ToggleFilterCell *tc;
+
+@property (nonatomic, assign) BOOL distanceExpanded;
+@property (nonatomic, assign) BOOL sortExpanded;
+@property (nonatomic, assign) BOOL categoryExpanded;
+
+@property (nonatomic, strong) NSString *chosenDistance;
+@property (nonatomic, strong) NSString *chosenSort;
+@property (nonatomic, strong) NSString *chosenCategory;
+
+@property (nonatomic, strong) NSArray *options;
 
 @end
 
@@ -45,11 +56,16 @@
     // set up toggle filter cell
     UINib *toggleFilterNib = [UINib nibWithNibName:@"ToggleFilterCell" bundle:nil];
     [self.filterTableView registerNib:toggleFilterNib forCellReuseIdentifier:@"ToggleFilterCell"];
-
-    // set up picker filter cell
-    UINib *pickerFilterNib = [UINib nibWithNibName:@"PickerFilterCell" bundle:nil];
-    [self.filterTableView registerNib:pickerFilterNib forCellReuseIdentifier:@"PickerFilterCell"];
     
+    // set up expand filter cell
+    UINib *expandFilterNib = [UINib nibWithNibName:@"ExpandFilterCell" bundle:nil];
+    [self.filterTableView registerNib:expandFilterNib forCellReuseIdentifier:@"ExpandFilterCell"];
+
+    // set up option arrays
+    NSArray *distanceOptions = [[NSArray alloc] initWithObjects:@"100 meters", @"200 meters", @"300 meters", nil];
+    NSArray *sortOptions = [[NSArray alloc] initWithObjects:@"Best Match", @"Distance", @"Highest Rated", nil];
+    NSArray *categoryOptions = [[NSArray alloc] initWithObjects:@"Breakfast & Brunch", @"Comfort Food", @"Dim Sum", @"Fondue", @"Raw Food", @"Tapas Bars", nil];
+    self.options = [[NSArray alloc] initWithObjects:distanceOptions, distanceOptions, sortOptions, categoryOptions, nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,23 +76,28 @@
 
 # pragma mark - Private methods
 
-- (void)onSearchClick {    
+- (void)onSearchClick {
+    // clear values
+    self.chosenDistance = nil;
+    self.chosenSort = nil;
+    self.chosenDistance = nil;
+    
+    // create, send inputs
     NSNumber *off = [NSNumber numberWithInteger:self.tc.off];
     NSNumber *distanceIndex = [NSNumber numberWithInteger:self.distanceIndex];
     NSNumber *sortIndex = [NSNumber numberWithInteger:self.sortIndex];
-    NSArray *inputs = [[NSArray alloc] initWithObjects: off, distanceIndex, sortIndex, nil];
+    NSNumber *categoryIndex = [NSNumber numberWithInteger:self.categoryIndex];
+    NSArray *inputs = [[NSArray alloc] initWithObjects: off, distanceIndex, sortIndex, categoryIndex, nil];
     [self.delegate addItemViewController:self didFinishEnteringItems:inputs];
+    
+    // return back to places view controller
     [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
 
 # pragma mark - Table view methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return 43;
-    } else {
-        return 120;
-    }
+    return 43;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -84,6 +105,15 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (self.distanceExpanded && section == 1) {
+        return 3;
+    } else if (self.sortExpanded && section == 2) {
+        return 3;
+    } else if (!self.categoryExpanded && section == 3 && !self.chosenCategory) {
+        return 2;
+    } else if (self.categoryExpanded && section == 3) {
+        return 6;
+    }
     return 1;
 }
 
@@ -94,17 +124,33 @@
         self.tc = tfc;
         return tfc;
     } else {
-        PickerFilterCell *pfc = [self.filterTableView dequeueReusableCellWithIdentifier:@"PickerFilterCell"];
-        pfc.picker.delegate = self;
-        pfc.picker.dataSource = self;
-        
-        if (indexPath.section == 1) {
-            pfc.picker.tag = 1;
-        } else if (indexPath.section == 2) {
-            pfc.picker.tag = 2;
+         ExpandFilterCell *efc = [self.filterTableView dequeueReusableCellWithIdentifier:@"ExpandFilterCell"];
+        NSInteger section = indexPath.section;
+        NSInteger row = indexPath.row;
+        NSString *text;
+        if (section == 1) {
+            if (self.chosenDistance != nil && !self.distanceExpanded) {
+                text = self.chosenDistance;
+            } else {
+                text = self.options[section][row];
+            }
+        } else if (section == 2) {
+            if (self.chosenSort != nil && !self.sortExpanded) {
+                text = self.chosenSort;
+            } else {
+                text = self.options[section][row];
+            }
+        } else if (section == 3) {
+            if (self.chosenCategory != nil && !self.categoryExpanded) {
+                text = self.chosenCategory;
+            } else if (!self.categoryExpanded && row == 1) {
+                text = @"See All";
+            } else {
+                text = self.options[section][row];
+            }
         }
-        
-        return pfc;
+        efc.option.text = text;
+        return efc;
     }
 }
 
@@ -122,48 +168,27 @@
     return title;
 }
 
-# pragma mark - Picker methods
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return 3;
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSString *title;
-    if (row == 0) {
-        if (pickerView.tag == 1) {
-            title = @"100 meters";
-        } else if (pickerView.tag == 2) {
-            title = @"Best Match";
-        }
-    } else if (row == 1) {
-        if (pickerView.tag == 1) {
-            title = @"200 meters";
-        } else if (pickerView.tag == 2) {
-            title = @"Distance";
-        }
-    } else if (row == 2) {
-        if (pickerView.tag == 1) {
-            title = @"300 meters";
-        } else if (pickerView.tag == 2) {
-            title = @"Highest Rated";
-        }
-    }
-    return title;
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (pickerView.tag == 1) {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    if (section == 1) {
+        self.distanceExpanded = !self.distanceExpanded;
         self.distanceIndex = row;
-        NSLog(@"set distance to be %d", row);
-    } else if (pickerView.tag == 2) {
+        self.chosenDistance = self.options[section][row];
+        NSLog(@"set distance to be %@", self.chosenDistance);
+    } else if (section == 2) {
+        self.sortExpanded = !self.sortExpanded;
         self.sortIndex = row;
-        NSLog(@"set sort to be %d", row);
+        self.chosenSort = self.options[section][row];
+        NSLog(@"set sort to be %@", self.chosenSort);
+    } else if (section == 3) {
+        self.categoryIndex = row;
+        self.chosenCategory = self.options[section][row];
+        self.categoryExpanded = !self.categoryExpanded;
+        NSLog(@"set category to be %@", self.chosenCategory);
     }
+    [self.filterTableView reloadData];
 }
 
 @end
