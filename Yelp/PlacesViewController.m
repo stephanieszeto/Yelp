@@ -74,7 +74,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 
 - (void)fetchData:(NSString *)input {
     if (!self.filterInputs) {
-        [self.client searchWithTerm:input success:^(AFHTTPRequestOperation *operation, id response) {
+        [self.client searchWithTerm:input success:^(AFHTTPRequestOperation *operation, id response) {            
             [self.places removeAllObjects];
             NSArray *businesses = [response objectForKey:@"businesses"];
             
@@ -94,8 +94,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
         NSNumber *deals = self.filterInputs[0];
     
         // extract distance input
-        NSArray *distances = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:300], nil];
-        NSNumber *distance = distances[[self.filterInputs[1] integerValue]];
+        NSNumber *distance = self.filterInputs[1];
     
         // extract sort input
         NSNumber *sort = self.filterInputs[2];
@@ -104,7 +103,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
         NSNumber *category = self.filterInputs[3];
 
         NSArray *inputs = [[NSArray alloc] initWithObjects:input, deals, distance, sort, category, nil];
- 
+        
         [self.client searchWithInputs:inputs success:^(AFHTTPRequestOperation *operation, id response) {
             // remove previous filters
             self.filterInputs = nil;
@@ -116,7 +115,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
                 Place *place = [[Place alloc] initWithDictionary:business];
                 [self.places addObject:place];
             }
-            //NSLog(@"places: %@", businesses);
+            
             for (Place *place in self.places) {
                 NSLog(@"place name: %@", place.name);
             }
@@ -183,14 +182,8 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PlaceCell *placeCell = [tableView dequeueReusableCellWithIdentifier:@"PlaceCell" forIndexPath:indexPath];
     Place *place = self.places[indexPath.row];
-    /*if (indexPath.row == 0) {
-        NSLog(@"BEGIN PRINTING PLACES WHEN LOADING CELL");
-        for (Place *place in self.places) {
-            NSLog(@"place name/cell: %@", place.name);
-        }
-    }
     
-    NSLog(@"place/cell: %@", place.name);*/
+    //NSLog(@"place/cell: %@", place.name);
     [placeCell setPlace:place];
     return placeCell;
 }

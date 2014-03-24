@@ -60,6 +60,10 @@
     // set up expand filter cell
     UINib *expandFilterNib = [UINib nibWithNibName:@"ExpandFilterCell" bundle:nil];
     [self.filterTableView registerNib:expandFilterNib forCellReuseIdentifier:@"ExpandFilterCell"];
+    
+    self.distanceIndex = -1;
+    self.sortIndex = -1;
+    self.categoryIndex = -1;
 
     // set up option arrays
     NSArray *distanceOptions = [[NSArray alloc] initWithObjects:@"100 meters", @"200 meters", @"300 meters", nil];
@@ -77,11 +81,6 @@
 # pragma mark - Private methods
 
 - (void)onSearchClick {
-    // clear values
-    self.chosenDistance = nil;
-    self.chosenSort = nil;
-    self.chosenDistance = nil;
-    
     // create, send inputs
     NSNumber *off = [NSNumber numberWithInteger:self.tc.off];
     NSNumber *distanceIndex = [NSNumber numberWithInteger:self.distanceIndex];
@@ -89,6 +88,14 @@
     NSNumber *categoryIndex = [NSNumber numberWithInteger:self.categoryIndex];
     NSArray *inputs = [[NSArray alloc] initWithObjects: off, distanceIndex, sortIndex, categoryIndex, nil];
     [self.delegate addItemViewController:self didFinishEnteringItems:inputs];
+    
+    // clear values
+    self.distanceIndex = -1;
+    self.sortIndex = -1;
+    self.categoryIndex = -1;
+    self.chosenDistance = nil;
+    self.chosenSort = nil;
+    self.chosenDistance = nil;
     
     // return back to places view controller
     [self.navigationController popToRootViewControllerAnimated:TRUE];

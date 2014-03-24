@@ -36,21 +36,30 @@
     // extract deal value
     NSNumber *deals = inputs[1];
     
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] initWithDictionary:@{@"term": term, @"location" : @"San Francisco", @"deals_filter" : deals}];
+    
     // extract distance value
+    NSArray *distances = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:100], [NSNumber numberWithInt:200], [NSNumber numberWithInt:300], nil];
     NSNumber *distance = inputs[2];
+    if ([distance integerValue] != -1) {
+        [parameters setValue:distances[[distance integerValue]] forKey:@"radius_filter"];
+    }
     
     // extract sort value
     NSNumber *sort = inputs[3];
+    if ([sort integerValue] != -1) {
+        [parameters setValue:sort forKey:@"sort"];
+    }
     
     // extract category value
     NSArray *categories = [[NSArray alloc] initWithObjects:@"breakfast_brunch", @"comfortfood", @"dimsum", @"fondue", @"raw_food", @"tapas", nil];
     NSInteger categoryIndex = [inputs[4] integerValue];
-    NSString *category = categories[categoryIndex];
-    
-    // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
-    NSDictionary *parameters = @{@"term": term, @"location" : @"San Francisco", @"sort" : sort, @"deals_filter" : deals, @"radius_filter" : distance, @"category_filter" : category};
+    if (categoryIndex != -1) {
+        NSString *category = categories[categoryIndex];
+        [parameters setValue:category forKey:@"category_filter"];
+    }
+
     NSLog(@"API call with parameters: %@", parameters);
-    
     id response = [self GET:@"search" parameters:parameters success:success failure:failure];
     return response;
 }
