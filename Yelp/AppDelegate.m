@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "PlacesViewController.h"
 
 @implementation AppDelegate
 
@@ -14,6 +15,11 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    
+    PlacesViewController *pvc = [[PlacesViewController alloc] init];
+    self.nc = [[UINavigationController alloc] initWithRootViewController:pvc];
+    self.window.rootViewController = self.nc;
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
