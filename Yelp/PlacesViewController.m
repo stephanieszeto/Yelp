@@ -25,6 +25,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSString *searchTerm;
 @property (nonatomic, strong) NSArray *filterInputs;
+@property (nonatomic, strong) PlaceCell *internalCell;
 
 @end
 
@@ -129,6 +130,15 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     }
 }
 
+- (PlaceCell *) cellForHeight {
+	if (self.internalCell == nil) {
+		self.internalCell = [self.tableView dequeueReusableCellWithIdentifier:@"PlaceCell"];
+	}
+	return self.internalCell;
+}
+
+# pragma mark - FilterViewController methods
+
 - (void)addItemViewController:(FilterViewController *)controller didFinishEnteringItems:(NSArray *)inputs {
     NSLog(@"sent over these inputs: %@", inputs);
     self.filterInputs = inputs;
@@ -172,7 +182,14 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 # pragma mark - Table view methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 110;
+    if (self.places.count == 0) {
+        return 100;
+    } else {
+        if (self.internalCell == nil) {
+            [self cellForHeight];
+        }
+        return [self.internalCell heightOfCell];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

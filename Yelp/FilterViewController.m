@@ -61,6 +61,7 @@
     UINib *expandFilterNib = [UINib nibWithNibName:@"ExpandFilterCell" bundle:nil];
     [self.filterTableView registerNib:expandFilterNib forCellReuseIdentifier:@"ExpandFilterCell"];
     
+    // initialize with -1
     self.distanceIndex = -1;
     self.sortIndex = -1;
     self.categoryIndex = -1;
@@ -131,7 +132,7 @@
         self.tc = tfc;
         return tfc;
     } else {
-         ExpandFilterCell *efc = [self.filterTableView dequeueReusableCellWithIdentifier:@"ExpandFilterCell"];
+        ExpandFilterCell *efc = [self.filterTableView dequeueReusableCellWithIdentifier:@"ExpandFilterCell"];
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
         NSString *text;

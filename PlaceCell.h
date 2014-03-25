@@ -14,6 +14,7 @@
 @property (nonatomic, strong) Place *business;
 
 - (void)setPlace:(Place *)business;
+- (CGFloat)heightOfCell;
 
 @end
 
