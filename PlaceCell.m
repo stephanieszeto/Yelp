@@ -82,9 +82,8 @@
 	}
 
 	// calculate height
-	double height = 32.0;
-    
-	CGSize minSize = CGSizeMake(211, 90);
+	double height = 38.0;
+	CGSize minSize = CGSizeMake(211, 100);
 	CGSize maxSize = CGSizeMake(211, 0);
 
 	height += [self.name.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:self.nameProperties context:nil].size.height;
